@@ -20,6 +20,9 @@
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 1.   | [README.md](https://github.com/IliaShi/donor_search/blob/main/README.md) | Представлена основная информация по проекту и его результатах   |
 | 2.   |  | Тетрадка с результатами работы |
+|| [](https://github.com/IliaShi/souz_mulfilm/blob/main/code/demonstration.ipynb) | Тетрадка, демонтрирующая работу модуля reels_clf.py |
+||[data_enrichment_dict.json](https://github.com/IliaShi/souz_mulfilm/blob/main/code/data_enrichment_dict.json) |json-файл с данными для обогащения тренировочного датасета, содержит словарь в формате: ключ - id ролика, значение - метка класса|
+||[target_errors.json](https://github.com/IliaShi/souz_mulfilm/blob/main/code/target_errors.json) | json-файл с данными для коррекции ошибок разметки в тренировочном датасете, содержит словарь в формате: ключ - id ролика, значение - правильная метка класса|
 | 3.   |  | Собственные функции для файла reels_clf.ipynb  |
 | 4.   |  | Модуль с итоговым решением  |
 | | [ demonstration.ipynb] | Тетрадка, демонстрирующая работу модуля reels_clf.py|
