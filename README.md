@@ -18,16 +18,14 @@
 
 | #    | Наименование файла                | Описание   |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 1.   | [README.md](https://github.com/IliaShi/souz_mulfilm/blob/main/README.md) | Представлена основная информация по проекту и его результатах   |
-| 2.   | [reels_classification.ipynb](https://github.com/IliaShi/souz_mulfilm/blob/main/reels_classification.ipynb)  | Тетрадка с результатами работы |
-||[own_functions.py](https://github.com/IliaShi/souz_mulfilm/blob/main/own_functions.py) | Модуль с собственными функциями для обзора и подготовки данных |
-|| [demonstration.ipynb](https://github.com/IliaShi/souz_mulfilm/blob/main/demonstration.ipynb) | Тетрадка, демонтрирующая работу модуля reels_clf.py |
-||[data_enrichment_dict.json](https://github.com/IliaShi/souz_mulfilm/blob/main/data_enrichment_dict.json) |json-файл с данными для обогащения тренировочного датасета, содержит словарь в формате: ключ - id ролика, значение - метка класса|
-||[target_errors.json](https://github.com/IliaShi/souz_mulfilm/blob/main/target_errors.json) | json-файл с данными для коррекции ошибок разметки в тренировочном датасете, содержит словарь в формате: ключ - id ролика, значение - правильная метка класса|
-| 3.   |  | Собственные функции для файла reels_clf.ipynb  |
-| 4.   |  | Модуль с итоговым решением  |
-| | [ demonstration.ipynb] | Тетрадка, демонстрирующая работу модуля reels_clf.py|
-
+| 1. | [README.md](https://github.com/IliaShi/souz_mulfilm/blob/main/README.md) | Основная информация по проекту и его результатах   |
+| 2. | [reels_classification.ipynb](https://github.com/IliaShi/souz_mulfilm/blob/main/reels_classification.ipynb) | Тетрадка с результатами работы |
+| 3. |[own_functions.py](https://github.com/IliaShi/souz_mulfilm/blob/main/own_functions.py) | Модуль с собственными функциями для обзора и подготовки данных |
+| 4. |[reels_clf.py](https://github.com/IliaShi/souz_mulfilm/blob/main/reels_clf.py) | Модуль с итоговым решением для классификации роликов |
+| 5. | [demonstration.ipynb](https://github.com/IliaShi/souz_mulfilm/blob/main/demonstration.ipynb) | Тетрадка, демонтрирующая работу модуля reels_clf.py |
+| 6. |[data_enrichment_dict.json](https://github.com/IliaShi/souz_mulfilm/blob/main/data_enrichment_dict.json) |json-файл с данными для обогащения тренировочного датасета, содержит словарь в формате: ключ - id ролика, значение - метка класса |
+| 7. |[target_errors.json](https://github.com/IliaShi/souz_mulfilm/blob/main/target_errors.json) | json-файл с данными для коррекции ошибок разметки в тренировочном датасете, содержит словарь в формате: ключ - id ролика, значение - правильная метка класса |
+| 8. | [requirements.txt](https://github.com/IliaShi/souz_mulfilm/blob/main/requirements.txt)) | Список зависимостей |
 
 ## **Описание данных**
 |Параметр|Описание|
