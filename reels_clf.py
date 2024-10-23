@@ -2,6 +2,13 @@
 Модуль reels_clf определяет принадлежность ролика с YouTube к одному из 44 мультипликационых проектов,
 отслеживаемых студией.
 
+Для функционирования модулю необходимы файлы:
+* model.pkl - обученная модель
+* ohe_yti.pkl - кодировщик для параметра yt_channel_id
+* tfidf.pkl - векторайзер для параметра reel_name
+Данные файлы доступны на HuggingFace: ILIA-Shi/cartoon_classification_souzmultfilm
+При первом запуске модуль скачивает и сохраняет файлы локально и в дальнейшем использует сохраненные версии
+
 При вызове функции reels_clf требуется передать параметры:
 - api_key - API-key для получения данных с YouTube
 - id_list - список ID видеороликов
@@ -38,7 +45,10 @@ from pymystem3 import Mystem
 import re
 import string
 import tqdm
+import os
 import joblib
+import requests
+from io import BytesIO
 
 # Пайплайн обработки датасетов
 # Обработка колонки 'yt_channel_id'
@@ -153,23 +163,49 @@ def text_cleaning(text):
 def matrix_preparation(df):
     """ Функция преобразует датасеты в формат матрицы для обучения модели
     Args:
-        train - тренировочный датасет
-        test - тестовый датасет
+        df - датасет
     Returns:
-        X_train - тренировочный датасет в форме вектора
-        X_test - тестовый датасет в форме вектора
-        ohe_yti - энкодер для yt_channel_id
-        tfidf - векторайзер для reel_name
+        data_result - данные в формате матрицы
     """
-    # Загружаем энкодер и векторайзер
-    try:
-        ohe_yti = joblib.load('../models/final/ohe_yti.pkl')
-    except Exception as e:
-        print(f'Ошибка при загрузке кодировщика: {e}')
-    try:
-        tfidf = joblib.load('../models/final/tfidf.pkl')
-    except Exception as e:
-        print(f'Ошибка при загрузке векторайзера: {e}')
+    # Если энкодер сохранен локально - загружаем
+    path = 'model/ohe_yti.pkl'
+    if os.path.exists(path):
+        ohe_yti = joblib.load(path)
+    # Если локального файла нет - загружаем енкодер из сети
+    else:
+        try:
+            url = 'https://huggingface.co/ILIA-Shi/cartoon_classification_souzmultfilm/resolve/main/ohe_yti.pkl'
+            resp = requests.get(url)
+            ohe_yti = joblib.load(BytesIO(resp.content))
+            # Сохраняем энкодер локально для последующего использования
+            try:
+                if not os.path.exists(os.path.dirname(path)):
+                    os.makedirs(os.path.dirname(path))
+                joblib.dump(ohe_yti, path)
+            except Exception as e:
+                print(f'Ошибка при сохранении энкодера: {e}')
+        except Exception as e:
+            print(f'Ошибка при загрузке энкодера: {e}')
+
+    # Если векторайзер сохранен локально - загружаем
+    path = 'model/tfidf.pkl'
+    if os.path.exists(path):
+        tfidf = joblib.load(path)
+    # Если локального файла нет - загружаем векторайзер из сети
+    else:
+        try:
+            url = 'https://huggingface.co/ILIA-Shi/cartoon_classification_souzmultfilm/resolve/main/tfidf.pkl'
+            resp = requests.get(url)
+            tfidf = joblib.load(BytesIO(resp.content))
+            # Сохраняем векторайзер локально для последующего использования
+            try:
+                if not os.path.exists(os.path.dirname(path)):
+                    os.makedirs(os.path.dirname(path))
+                joblib.dump(tfidf, path)
+            except Exception as e:
+                print(f'Ошибка при сохранении векторайзера: {e}')
+        except Exception as e:
+            print(f'Ошибка при загрузке векторайзера: {e}')
 
     # Кодирование yt_channel_id
     data_yti = ohe_yti.transform(df[['yt_channel_id']])
@@ -186,17 +222,18 @@ def matrix_preparation(df):
 
 
 def reels_clf(api_key:str, id_list=[]):
-    """ Функция принимает входящие в модуль значения, координирует код модуля и возвращает ответ.
+    """ Основная функция модуля. Обрабатывает входящие данные, получает предсказания модели, возвращает ответ.
     Args:
         api_key - API-key для получения данных с YouTube
         id_list - список ID видеороликов
     Returns:
-        res - список возвращаемых значений
+        res - словарь: ключ - ID видеороликов, значение - предсказание модели
     """
+    pd.set_option('future.no_silent_downcasting', True)
     # Проверка передаваемого API-key
     try:
         api = Api(api_key=api_key)
-        response = api.get_channel_info(channel_id="UC_x5XG1OV2P6uZZ5FSM9Ttw")  # Пример: канал Google Developers
+        _ = api.get_channel_info(channel_id="UC_x5XG1OV2P6uZZ5FSM9Ttw")  # Пробный доступ к каналу
     except Exception as e:
         print(f'Ошибка {e}')
         return [], 'Ошибка доступа к API YouTube. Проверьте API-key.'
@@ -214,7 +251,7 @@ def reels_clf(api_key:str, id_list=[]):
             video_data = video_response.items[0].to_dict()
             res[id] = ''
         except:
-            print(f'Не удалось получить данные для ролика: id {id}')
+            print(f'Не удалось получить данные для ролика с id: {id}')
             res[id] = 'wrong id'
             continue
         # Добавляем пустую строчку к датафрейму
@@ -239,11 +276,29 @@ def reels_clf(api_key:str, id_list=[]):
     # Создаем матрицу признаков
     df = matrix_preparation(df)
 
-    # Загружаем модель
-    try:
-        model = joblib.load('../models/final/model_rf.pkl')
-    except Exception as e:
-        print(f'Ошибка при загрузке модели: {e}')
+    # Если модель сохранена локально - загружаем
+    path = 'model/model.pkl'
+    if os.path.exists(path):
+        model = joblib.load(path)
+        print(f'Модель загружена из локального пути {path}')
+    # Если локального файла нет - загружаем модель из сети
+    else:
+        try:
+            url = 'https://huggingface.co/ILIA-Shi/cartoon_classification_souzmultfilm/resolve/main/model_rf.pkl'
+            print(f'Модель загружается с {url}')
+            resp = requests.get(url)
+            model = joblib.load(BytesIO(resp.content))
+            print('Модель загружена успешно')
+            # Сохраняем модель локально для последующего использования
+            try:
+                if not os.path.exists(os.path.dirname(path)):
+                    os.makedirs(os.path.dirname(path))
+                joblib.dump(model, path)
+                print(f'Модель сохранена локально: {path}')
+            except Exception as e:
+                print(f'Ошибка при сохранении модели: {e}')
+        except Exception as e:
+            print(f'Ошибка при загрузке модели: {e}')
 
     # Получаем предсказания модели
     answers = model.predict(df)
