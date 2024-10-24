@@ -97,7 +97,15 @@
 В качестве модели-классификатора применялись Логистическая регрессия (один против всех), RandomForest, CatBoost, а также нейросетевая модель. 
 Наилучшие результаты показал RandomForest с параметрами: {'n_estimators': 180, 'min_samples_split': 10, 'min_samples_leaf': 1, 'max_depth': None, 'bootstrap': True}.
 
-## Тестирование итогового решения
+## Итоговое решение
+Итоговая модель использует следующие признаки:
+* reel_name: векторизация tf-idf, очистка
+* yt_channel_id: кодирование
+* seconds
+* длина ‘text’
+Классификация с помощью RadnomForest.
+![image](https://github.com/user-attachments/assets/f99fa489-0a67-428a-bde6-830954f930f5)
+
 Качество модели проверено на тренировочном датасете на платформе Kaggle [Ссылка на соревнование](https://www.kaggle.com/competitions/animation-reels-classification/leaderboard?). На тестовом датасете получена метрика f1 = 0.92.
 
 ## Модуль
