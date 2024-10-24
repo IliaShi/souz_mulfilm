@@ -82,6 +82,7 @@
 |Добавление признака broadcast| <span style='color: red;'>-9%</span>  | |
 |Добавление признака yt_channel_type| <span style='color: red;'>-2%</span>  | |
 |Добавление признака closed| <span style='color: red;'>-1%</span>  | |
+|Добавление признака seconds|<span style='color: green;'>+1%</span> | оставляем в качестве признака |
 |Добавление признака "длина 'text'"| <span style='color: green;'>+0.4%</span>  |оставляем в качестве признака |
 |Использование как моно- так и биграмм TfidfVectorizer(ngram_range=(1, 2) | <span style='color: red;'>-19%</span> | |
 |Использование только биграмм TfidfVectorizer(ngram_range=(2, 2) | <span style='color: red;'>-24%</span> | |
