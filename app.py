@@ -6,7 +6,7 @@ import requests
 # Заголовок и лого
 left, _, right = st.columns([1, 0.2, 0.4])
 left.title('Классификация мультфильмов на YouTube')
-right.image('../app/logo.gif')
+right.image('logo.gif')
 
 # Перечисление мультпроектов
 left, right = st.columns([1, 0.2])
