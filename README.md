@@ -107,7 +107,7 @@
 * длина ‘text’
 Классификация с помощью RadnomForest.
 
-Качество модели проверено на тренировочном датасете на платформе Kaggle [Ссылка на соревнование](https://www.kaggle.com/competitions/animation-reels-classification/leaderboard?). На тестовом датасете получена метрика f1 = 0.92.
+Качество модели проверено на тренировочном датасете на платформе Kaggle ([LiderBoard](https://www.kaggle.com/competitions/animation-reels-classification/leaderboard?)). На тестовом датасете получена метрика f1 = 0.92.
 
 ## Модуль
 Cоздан модуль reels_clf.py с функцией reels_clf.  
