@@ -309,8 +309,8 @@ inp = st.text_input('Скопируйте в поле ввода ссылку н
 
 # Выделяем из введенного текста ID видеоролика
 left, right = st.columns([1, 1])
-match = re.search(r'\?v=(.*?)&', inp)
-match_shorts = re.search(r'shorts/(.*)', inp)
+match = re.search(r'\?v=(.*?){11}', inp)
+match_shorts = re.search(r'shorts/(.*){11}', inp)
 if match:
     reel_id = match.group(1)
     list_id = [reel_id]
