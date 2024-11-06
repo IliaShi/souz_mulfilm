@@ -1,4 +1,4 @@
 ### Файлы приложения для Streamlit:
 * app.py - скрипт приложения
-* requirments.txt - 
+* requirments.txt - окружение
 * logo.gif - гифка в заголовок 
