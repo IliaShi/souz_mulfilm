@@ -283,7 +283,7 @@ def reels_clf(api_key:str, id_list=[]):
 # Заголовок и лого
 left, _, right = st.columns([1, 0.2, 0.4])
 left.title('Классификация мультфильмов на YouTube')
-right.image('logo.gif')
+right.image('app/logo.gif')
 
 # Перечисление мультпроектов
 left, right = st.columns([1, 0.2])
